@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title><%= business.name || "Timolo Business" %></title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f6fa;
+      color: #222;
+    }
+
+    .hero {
+      background: #111827;
+      color: white;
+      padding: 40px 20px 35px;
+      text-align: center;
+    }
+
+    .logo {
+      width: 88px;
+      height: 88px;
+      background: white;
+      color: #111827;
+      border-radius: 50%;
+      margin: 0 auto 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      font-weight: bold;
+    }
+
+    .hero h1 {
+      font-size: 28px;
+      margin-bottom: 9px;
+    }
+
+    .tagline {
+      color: #d1d5db;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 650px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .section-title {
+      margin: 5px 0 15px;
+      font-size: 21px;
+    }
+
+    .product {
+      background: white;
+      border-radius: 16px;
+      padding: 15px;
+      margin-bottom: 16px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+      overflow: hidden;
+    }
+
+    .product-image {
+      width: 100%;
+      height: 230px;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+      margin-bottom: 13px;
+    }
+
+    .product h3 {
+      font-size: 19px;
+      margin-bottom: 7px;
+    }
+
+    .price {
+      font-size: 17px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .message {
+      color: #666;
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 13px;
+    }
+
+    .order {
+      display: block;
+      text-align: center;
+      background: #25D366;
+      color: white;
+      text-decoration: none;
+      padding: 13px;
+      border-radius: 10px;
+      font-weight: bold;
+    }
+
+    .order:active {
+      transform: scale(0.98);
+    }
+
+    .empty {
+      background: white;
+      padding: 25px 15px;
+      border-radius: 15px;
+      text-align: center;
+      color: #777;
+    }
+
+    .info {
+      background: white;
+      padding: 20px;
+      border-radius: 16px;
+      margin-top: 22px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+    }
+
+    .info h2 {
+      margin-bottom: 12px;
+      font-size: 20px;
+    }
+
+    .info p {
+      margin: 9px 0;
+      color: #444;
+    }
+
+    .customize {
+      display: block;
+      text-align: center;
+      margin: 18px 0 5px;
+      color: #111827;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    @media (max-width: 480px) {
+      .hero {
+        padding: 32px 16px;
+      }
+
+      .hero h1 {
+        font-size: 25px;
+      }
+
+      .container {
+        padding: 15px;
+      }
+
+      .product-image {
+        height: 210px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- BUSINESS HEADER -->
+
+  <div class="hero">
+
+    <div class="logo">
+      <%= (business.name || "TB").substring(0, 2).toUpperCase() %>
+    </div>
+
+    <h1>
+      <%= business.name || "Timolo Business" %>
+    </h1>
+
+    <p class="tagline">
+
+      <% if (business.tagline) { %>
+        <%= business.tagline %>
+      <% } %>
+
+      <% if (business.location) { %>
+        • <%= business.location %>
+      <% } %>
+
+    </p>
+
+  </div>
+
+
+  <div class="container">
+
+    <!-- PRODUCTS -->
+
+    <h2 class="section-title">
+      🛍️ Bidhaa & Huduma
+    </h2>
+
+
+    <% if (!business.products || business.products.length === 0) { %>
+
+      <div class="empty">
+        <p>📦 Hakuna bidhaa au huduma bado.</p>
+      </div>
+
+    <% } else { %>
+
+      <% business.products.forEach(product => { %>
+
+        <div class="product">
+
+          <% if (product.image) { %>
+
+            <img
+              class="product-image"
+              src="<%= product.image %>"
+              alt="<%= product.name %>"
+            >
+
+          <% } %>
+
+
+          <h3>
+            🛍️ <%= product.name %>
+          </h3>
+
+
+          <p class="price">
+            <%= product.price %>
+          </p>
+
+
+          <% if (product.message) { %>
+
+            <p class="message">
+              <%= product.message %>
+            </p>
+
+          <% } %>
+
+
+          <% if (business.whatsapp) { %>
+
+            <a
+              class="order"
+              href="https://wa.me/<%= business.whatsapp.replace(/[^0-9]/g, '') %>?text=<%= encodeURIComponent(product.message || ('Habari, nahitaji ' + product.name)) %>"
+              target="_blank"
+            >
+              💬 Wasiliana WhatsApp
+            </a>
+
+          <% } %>
+
+        </div>
+
+      <% }) %>
+
+    <% } %>
+
+
+    <!-- CONTACT -->
+
+    <div class="info">
+
+      <h2>
+        📞 Wasiliana Nasi
+      </h2>
+
+      <% if (business.whatsapp) { %>
+
+        <p>
+          📱 WhatsApp: <%= business.whatsapp %>
+        </p>
+
+      <% } %>
+
+
+      <% if (business.location) { %>
+
+        <p>
+          📍 <%= business.location %>
+        </p>
+
+      <% } %>
+
+
+      <p>
+        🕐 Tunapatikana kila siku
+      </p>
+
+    </div>
+
+
+    <!-- OWNER LINK -->
+
+    <a
+      class="customize"
+      href="/customize"
+    >
+      ⚙️ Customize Business
+    </a>
+
+  </div>
+
+</body>
+</html>

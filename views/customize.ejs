@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Customize Business</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f6fa;
+      color: #222;
+    }
+
+    .header {
+      background: #111827;
+      color: white;
+      padding: 25px 20px;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    }
+
+    .field {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 7px;
+    }
+
+    input {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      background: #111827;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .back {
+      display: block;
+      text-align: center;
+      margin-top: 15px;
+      color: #111827;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="header">
+    <h1>⚙️ Customize Business</h1>
+    <p>Badilisha taarifa za biashara yako</p>
+  </div>
+
+  <div class="container">
+
+    <div class="card">
+
+      <form action="/customize" method="POST">
+
+        <div class="field">
+          <label>🏪 Jina la Biashara</label>
+          <input
+            type="text"
+            name="name"
+            value="<%= business.name %>"
+            required
+          >
+        </div>
+
+        <div class="field">
+          <label>📝 Tagline</label>
+          <input
+            type="text"
+            name="tagline"
+            value="<%= business.tagline %>"
+            required
+          >
+        </div>
+
+        <div class="field">
+          <label>📍 Location</label>
+          <input
+            type="text"
+            name="location"
+            value="<%= business.location %>"
+            required
+          >
+        </div>
+
+        <div class="field">
+          <label>📱 WhatsApp Number</label>
+          <input
+            type="text"
+            name="whatsapp"
+            value="<%= business.whatsapp %>"
+            required
+          >
+        </div>
+
+        <button type="submit">
+          💾 SAVE CHANGES
+        </button>
+
+      </form>
+
+      <a class="back" href="/">
+        ← Rudi kwenye Business Page
+      </a>
+
+    </div>
+
+  </div>
+
+</body>
+</html>

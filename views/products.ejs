@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Bidhaa & Huduma - <%= business.name %></title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f6fa;
+      color: #222;
+    }
+
+    .header {
+      background: #111827;
+      color: white;
+      padding: 28px 20px;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 25px;
+      margin-bottom: 8px;
+    }
+
+    .header p {
+      color: #d1d5db;
+      font-size: 15px;
+    }
+
+    .container {
+      max-width: 650px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 16px;
+      margin-bottom: 20px;
+      box-shadow: 0 3px 14px rgba(0,0,0,0.07);
+    }
+
+    .card h2 {
+      margin-bottom: 18px;
+      font-size: 20px;
+    }
+
+    .field {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 7px;
+    }
+
+    input {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 16px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #111827;
+    }
+
+    .add-btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      background: #111827;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .add-btn:active {
+      transform: scale(0.98);
+    }
+
+    .product {
+      border: 1px solid #eee;
+      border-radius: 14px;
+      padding: 15px;
+      margin-bottom: 15px;
+      background: #fff;
+    }
+
+    .product:last-child {
+      margin-bottom: 0;
+    }
+
+    .product-image {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 13px;
+      display: block;
+    }
+
+    .product h3 {
+      font-size: 19px;
+      margin-bottom: 7px;
+    }
+
+    .price {
+      font-weight: bold;
+      font-size: 17px;
+      margin-bottom: 7px;
+    }
+
+    .message {
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 14px;
+      line-height: 1.5;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .edit {
+      flex: 1;
+      display: block;
+      text-align: center;
+      padding: 11px;
+      border-radius: 9px;
+      background: #e5e7eb;
+      color: #111827;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .delete-form {
+      flex: 1;
+    }
+
+    .delete {
+      width: 100%;
+      padding: 11px;
+      border: none;
+      border-radius: 9px;
+      background: #dc2626;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .whatsapp {
+      display: block;
+      width: 100%;
+      margin-top: 10px;
+      padding: 12px;
+      border-radius: 9px;
+      background: #16a34a;
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .empty {
+      text-align: center;
+      color: #777;
+      padding: 20px 5px;
+    }
+
+    .back {
+      display: block;
+      text-align: center;
+      margin: 20px 0;
+      color: #111827;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 15px;
+      }
+
+      .card {
+        padding: 16px;
+      }
+
+      .product-image {
+        height: 200px;
+      }
+
+      .actions {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="header">
+    <h1>🛍️ Bidhaa & Huduma</h1>
+    <p><%= business.name %></p>
+  </div>
+
+  <div class="container">
+
+    <!-- ADD PRODUCT -->
+
+    <div class="card">
+
+      <h2>➕ Ongeza Bidhaa / Huduma</h2>
+
+      <form action="/products/add" method="POST" enctype="multipart/form-data">
+
+        <div class="field">
+          <label>Jina</label>
+
+          <input
+            type="text"
+            name="name"
+            placeholder="Mfano: Samsung A15"
+            required
+          >
+        </div>
+
+        <div class="field">
+          <label>Bei</label>
+
+          <input
+            type="text"
+            name="price"
+            placeholder="Mfano: TSh 450,000"
+            required
+          >
+        </div>
+
+        <div class="field">
+          <label>📷 Picha ya Bidhaa</label>
+
+          <input
+            type="file"
+            name="image"
+            accept="image/*"
+          >
+        </div>
+
+        <div class="field">
+          <label>Ujumbe wa WhatsApp</label>
+
+          <input
+            type="text"
+            name="message"
+            placeholder="Habari, nahitaji Samsung A15"
+            required
+          >
+        </div>
+
+        <button class="add-btn" type="submit">
+          💾 Hifadhi Bidhaa
+        </button>
+
+      </form>
+
+    </div>
+
+
+    <!-- PRODUCTS LIST -->
+
+    <div class="card">
+
+      <h2>📦 Bidhaa / Huduma Zako</h2>
+
+      <% if (!business.products || business.products.length === 0) { %>
+
+        <div class="empty">
+          <p>📭 Hakuna bidhaa au huduma bado.</p>
+          <p style="margin-top:6px;">
+            Ongeza bidhaa yako hapo juu.
+          </p>
+        </div>
+
+      <% } else { %>
+
+        <% business.products.forEach((product, index) => { %>
+
+          <div class="product">
+
+            <% if (product.image) { %>
+
+              <img
+                class="product-image"
+                src="<%= product.image %>"
+                alt="<%= product.name %>"
+              >
+
+            <% } %>
+
+
+            <h3>
+              <%= product.name %>
+            </h3>
+
+            <p class="price">
+              <%= product.price %>
+            </p>
+
+            <% if (product.message) { %>
+
+              <p class="message">
+                <%= product.message %>
+              </p>
+
+            <% } %>
+
+
+            <!-- ACTIONS -->
+
+            <div class="actions">
+
+              <a
+                class="edit"
+                href="/products/edit/<%= index %>"
+              >
+                ✏️ Edit
+              </a>
+
+
+              <form
+                class="delete-form"
+                action="/products/delete/<%= index %>"
+                method="POST"
+                onsubmit="return confirm('Una uhakika unataka kufuta bidhaa hii?');"
+              >
+
+                <button
+                  class="delete"
+                  type="submit"
+                >
+                  🗑️ Futa
+                </button>
+
+              </form>
+
+            </div>
+
+
+            <!-- WHATSAPP -->
+
+            <% if (business.whatsapp) { %>
+
+              <a
+                class="whatsapp"
+                href="https://wa.me/<%= business.whatsapp.replace(/[^0-9]/g, '') %>?text=<%= encodeURIComponent(product.message || ('Habari, nahitaji ' + product.name)) %>"
+                target="_blank"
+              >
+                💬 Wasiliana WhatsApp
+              </a>
+
+            <% } %>
+
+          </div>
+
+        <% }) %>
+
+      <% } %>
+
+    </div>
+
+
+    <a class="back" href="/">
+      ← Rudi kwenye Business Page
+    </a>
+
+  </div>
+
+</body>
+</html>
