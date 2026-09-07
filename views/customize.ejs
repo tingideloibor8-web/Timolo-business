@@ -137,7 +137,36 @@
         </button>
 
       </form>
+      <div style="margin-top:20px; padding:15px; background:#f3f4f6; border-radius:10px;">
+        <strong>🔗 Link ya Biashara yako</strong>
 
+        <input
+          type="text"
+          id="businessLink"
+          value="<%= '/b/' + business.slug %>"
+          readonly
+          style="margin-top:10px;"
+        >
+
+        <button
+          type="button"
+          onclick="copyBusinessLink()"
+          style="margin-top:10px;"
+        >
+          📋 COPY LINK
+        </button>
+      </div>
+
+      <script>
+        function copyBusinessLink() {
+          const input = document.getElementById("businessLink");
+          const link = window.location.origin + input.value;
+
+          navigator.clipboard.writeText(link).then(() => {
+            alert("✅ Link imenakiliwa!");
+          });
+        }
+      </script>
       <a class="back" href="/">
         ← Rudi kwenye Business Page
       </a>
