@@ -1,0 +1,26 @@
+{
+  "name": "Timolo electronics ",
+  "tagline": "Simu na assecories kwa bei nafuu ",
+  "location": "Arusha, Tanzania",
+  "whatsapp": "255756915350",
+  "products": [
+    {
+      "name": "Bidhaa au Huduma 1",
+      "price": "TSh 0",
+      "message": "Habari, nahitaji Bidhaa au Huduma 1"
+    },
+    {
+      "name": "Samsung A15",
+      "price": "Tsh 450000",
+      "message": "Habar nahitaj Samsung A15",
+      "image": ""
+    },
+    {
+      "name": "Samsung s26",
+      "price": "Tsh 450000",
+      "message": "Habar nahitaj Samsung s26",
+      "image": "/uploads/44694a39bb5c600079e226668c63978a"
+    }
+  ],
+  "slug": "timolo-electronics"
+}

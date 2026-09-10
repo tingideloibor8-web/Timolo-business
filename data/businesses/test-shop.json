@@ -1,0 +1,15 @@
+{
+  "name": "Test shop",
+  "tagline": "Karibu kwenye biashara yetu",
+  "location": "Arusha, Tanzania",
+  "whatsapp": "255756915350",
+  "slug": "test-shop",
+  "products": [
+    {
+      "name": "Samsung s26",
+      "price": "Tsh 450000",
+      "message": "Habar nahitaj Samsung A15",
+      "image": ""
+    }
+  ]
+}
