@@ -181,26 +181,7 @@ app.post("/register", (req, res) => {
 ========================= */
 
 app.get("/", (req, res) => {
-  if (!req.session.loggedIn) {
-    return res.redirect("/login");
-  }
-
-  const businessFile = path.join(
-    __dirname,
-    "data",
-    "businesses",
-    req.session.businessSlug + ".json"
-  );
-
-  if (!fs.existsSync(businessFile)) {
-    return res.status(404).send("Business account not found");
-  }
-
-  const business = JSON.parse(
-    fs.readFileSync(businessFile, "utf8")
-  );
-
-  res.render("index", { business });
+  res.render("home");
 });
 
 /* =========================
