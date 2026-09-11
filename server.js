@@ -89,8 +89,7 @@ app.post("/login", (req, res) => {
   req.session.username = user.username;
   req.session.businessSlug = user.businessSlug;
 
-  res.redirect("/");
-});
+  res.redirect("/products");});
 
 app.get("/logout", (req, res) => {
   req.session.destroy(() => {
