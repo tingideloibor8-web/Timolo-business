@@ -50,6 +50,45 @@ function createSlug(name) {
     .replace(/\s+/g, "-")
     .replace(/-+/g, "-");
 }
+
+/* =========================
+   ADMIN
+========================= */
+
+app.get("/admin/login", (req, res) => {
+  if (req.session.isAdmin) {
+    return res.redirect("/admin");
+  }
+
+  res.render("admin-login");
+});
+
+app.post("/admin/login", (req, res) => {
+  const username = (req.body.username || "").trim();
+  const password = req.body.password || "";
+
+  const adminUsername = process.env.ADMIN_USERNAME || "admin";
+  const adminPassword = process.env.ADMIN_PASSWORD || "timolo123";
+
+  if (username !== adminUsername || password !== adminPassword) {
+    return res.status(401).send(`
+      <h2>Username au password ya Admin sio sahihi.</h2>
+      <a href="/admin/login">Rudi Admin Login</a>
+    `);
+  }
+
+  req.session.isAdmin = true;
+  req.session.adminUsername = username;
+
+  res.redirect("/admin");
+});
+
+app.get("/admin/logout", (req, res) => {
+  req.session.isAdmin = false;
+  req.session.adminUsername = null;
+  res.redirect("/admin/login");
+});
+
 /* =========================
    LOGIN
 ========================= */
@@ -176,6 +215,127 @@ app.post("/register", (req, res) => {
 });
 
 /* =========================
+   ADMIN DELETE BUSINESS
+========================= */
+
+app.post("/admin/business/toggle/:slug", (req, res) => {
+  if (!req.session.isAdmin) {
+    return res.redirect("/admin/login");
+  }
+
+  const slug = req.params.slug;
+
+  const businessFile = path.join(
+    __dirname,
+    "data",
+    "businesses",
+    slug + ".json"
+  );
+
+  if (!fs.existsSync(businessFile)) {
+    return res.status(404).send("Biashara haijapatikana.");
+  }
+
+  const business = JSON.parse(
+    fs.readFileSync(businessFile, "utf8")
+  );
+
+  business.status =
+    business.status === "suspended"
+      ? "active"
+      : "suspended";
+
+  fs.writeFileSync(
+    businessFile,
+    JSON.stringify(business, null, 2)
+  );
+
+  res.redirect("/admin");
+});
+
+app.post("/admin/business/delete/:slug", (req, res) => {
+  if (!req.session.isAdmin) {
+    return res.redirect("/admin/login");
+  }
+
+  const slug = req.params.slug;
+
+  const usersFile = path.join(__dirname, "data", "users.json");
+  const businessFile = path.join(
+    __dirname,
+    "data",
+    "businesses",
+    slug + ".json"
+  );
+
+  if (!fs.existsSync(businessFile)) {
+    return res.status(404).send("Biashara haijapatikana.");
+  }
+
+  let users = JSON.parse(fs.readFileSync(usersFile, "utf8"));
+
+  users = users.filter(user => user.businessSlug !== slug);
+
+  fs.writeFileSync(
+    usersFile,
+    JSON.stringify(users, null, 2)
+  );
+
+  fs.unlinkSync(businessFile);
+
+  res.redirect("/admin");
+});
+
+/* =========================
+   ADMIN DASHBOARD
+========================= */
+
+app.get("/admin", (req, res) => {
+  if (!req.session.isAdmin) {
+    return res.redirect("/admin/login");
+  }
+
+  const usersFile = path.join(__dirname, "data", "users.json");
+  const businessesDir = path.join(__dirname, "data", "businesses");
+
+  const users = JSON.parse(fs.readFileSync(usersFile, "utf8"));
+
+  let businesses = [];
+
+  if (fs.existsSync(businessesDir)) {
+    const files = fs.readdirSync(businessesDir)
+      .filter(file => file.endsWith(".json"));
+
+    businesses = files.map(file => {
+      const filePath = path.join(businessesDir, file);
+      const business = JSON.parse(fs.readFileSync(filePath, "utf8"));
+
+      const owner = users.find(
+        user => user.businessSlug === business.slug
+      );
+
+      return {
+        ...business,
+        username: owner ? owner.username : "Unknown"
+      };
+    });
+  }
+
+  const productsCount = businesses.reduce(
+    (total, business) =>
+      total + (Array.isArray(business.products) ? business.products.length : 0),
+    0
+  );
+
+  res.render("admin-dashboard", {
+    usersCount: users.length,
+    businessesCount: businesses.length,
+    productsCount,
+    businesses
+  });
+});
+
+/* =========================
    DASHBOARD
 ========================= */
 
@@ -271,6 +431,16 @@ app.get("/b/:slug", (req, res) => {
   const business = JSON.parse(
     fs.readFileSync(businessFile, "utf8")
   );
+
+  // Business mpya au ambayo haina status bado inahesabiwa kuwa active
+  if (business.status === "suspended") {
+    return res.status(403).send(`
+      <div style="font-family:Arial;text-align:center;padding:50px;">
+        <h1>Biashara imesimamishwa</h1>
+        <p>Business hii kwa sasa haipatikani.</p>
+      </div>
+    `);
+  }
 
   res.render("public-business", { business });
 });

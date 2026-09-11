@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Timolo Admin Dashboard</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      color: #111827;
+    }
+
+    header {
+      background: #111827;
+      color: white;
+      padding: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h2 {
+      margin: 0;
+    }
+
+    header a {
+      color: white;
+      text-decoration: none;
+      background: #dc2626;
+      padding: 9px 13px;
+      border-radius: 7px;
+    }
+
+    .container {
+      padding: 20px;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,.06);
+    }
+
+    .number {
+      font-size: 30px;
+      font-weight: bold;
+      margin-top: 8px;
+    }
+
+    .business {
+      margin-top: 15px;
+      border: 1px solid #e5e7eb;
+    }
+
+    .business h3 {
+      margin-top: 0;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 9px 13px;
+      border-radius: 7px;
+      text-decoration: none;
+      background: #2563eb;
+      color: white;
+      margin-top: 8px;
+    }
+
+    .empty {
+      color: #6b7280;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h2>⚙️ Timolo Admin</h2>
+  <a href="/admin/logout">Logout</a>
+</header>
+
+<div class="container">
+
+  <h2>Dashboard</h2>
+
+  <div class="stats">
+    <div class="card">
+      <div>👥 Users</div>
+      <div class="number"><%= usersCount %></div>
+    </div>
+
+    <div class="card">
+      <div>🏪 Businesses</div>
+      <div class="number"><%= businessesCount %></div>
+    </div>
+
+    <div class="card">
+      <div>📦 Products</div>
+      <div class="number"><%= productsCount %></div>
+    </div>
+  </div>
+
+  <h2>Biashara Zote</h2>
+
+  <% if (businesses.length === 0) { %>
+    <p class="empty">Hakuna biashara bado.</p>
+  <% } %>
+
+  <% businesses.forEach(business => { %>
+    <div class="card business">
+      <h3>🏪 <%= business.name %></h3>
+
+      <p>👤 Username: <%= business.username %></p>
+      <p>📍 <%= business.location %></p>
+      <p>📦 Bidhaa: <%= business.products.length %></p>
+
+      <a class="button" href="/b/<%= business.slug %>" target="_blank">
+        👁️ Fungua Business
+      </a>
+
+      <form method="POST"
+            action="/admin/business/toggle/<%= business.slug %>"
+            style="display:inline;"
+            onsubmit="return confirm('<%= business.status === "suspended" ? "Unataka ku-ACTIVATE biashara hii?" : "Unataka ku-SUSPEND biashara hii?" %>');">
+
+        <button type="submit"
+                style="margin-top:8px;padding:9px 13px;border:0;border-radius:7px;background:<%= business.status === "suspended" ? "#16a34a" : "#f59e0b" %>;color:white;">
+          <%= business.status === "suspended" ? "🟢 Activate Business" : "⏸️ Suspend Business" %>
+        </button>
+
+      </form>
+
+      <form method="POST"
+            action="/admin/business/delete/<%= business.slug %>"
+            style="display:inline;"
+            onsubmit="return confirm('Una uhakika unataka KUFUTA biashara hii kabisa?');">
+
+        <button type="submit"
+                style="margin-top:8px;padding:9px 13px;border:0;border-radius:7px;background:#dc2626;color:white;">
+          🗑️ Futa Biashara
+        </button>
+
+      </form>
+    </div>
+  <% }) %>
+
+</div>
+
+</body>
+</html>
